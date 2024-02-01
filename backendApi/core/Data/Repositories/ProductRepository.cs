@@ -1,7 +1,7 @@
-﻿using core.Domain.ClassTypes;
+﻿#region Usings
+using core.Domain.ClassTypes;
 using core.Domain.InterfaceRepositories;
 using core.Domain.Models;
-#region Usings
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
