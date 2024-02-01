@@ -1,0 +1,41 @@
+<div class="card ui-grid AddUpdateForm">
+    <form novalidate="novalidate" [formGroup]="userForm">
+        <div class="p-formgrid p-field p-grid">
+        
+            <div class="form-group p-field p-grid p-md-6">
+                <div class="p-md-4">
+                    <label for="email">Email</label>
+                </div>
+                <div class="p-md-7">
+                    <input id="email" pInputText name="email"  [(ngModel)]="email"
+                    formControlName="email" />                  
+                </div>
+               
+            </div>
+            <div class="form-group p-field p-grid p-md-6">
+                <div class="p-md-4">
+            <label for="password">Password</label>
+            </div>
+            <div class="p-md-7">
+            <p-password id="password" class="placeholder_password"  [(ngModel)]="password" [feedback]="false" [toggleMask]="true" name="password" formControlName="password" ></p-password>
+            </div>
+            <p>
+                <span><a  routerLink="/reset-password">Forgot your password?</a></span>
+            </p>
+            </div> 
+        </div>
+        <button pButton pRipple  class="p-button-primary p-mr-2" (click)="onLogin()">Log in 
+        </button>
+        <p>
+            <span><a  routerLink="/registration">Don't have an account? Sign in </a></span>
+        </p>
+    </form>
+
+
+</div>
+<p-blockUI [blocked]="loading">
+    <i class="pi pi-spin pi-spinner"
+      style="position:absolute;top:50%;left:47%;color: black;font-size: 100px;"></i>
+  </p-blockUI>
+    
+  <p-toast position="top-right" life="5000"></p-toast>

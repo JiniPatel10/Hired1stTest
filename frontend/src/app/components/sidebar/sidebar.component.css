@@ -1,0 +1,32 @@
+.sticky-side-menu {
+    position: sticky;
+    top: 0;
+  }
+  
+  .sidebar-content {
+    padding: 16px;
+  }
+  
+  .p-menu-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .p-menu-list li {
+    margin-bottom: 10px;
+  }
+  
+  .menu-color {
+    margin-right: 10px;
+  }
+  
+  .menu-divider {
+    border: 1px solid maroon;
+    margin: 10px 0;
+  }
+  
+  .hr-bottom {
+    border: 1px solid maroon;
+    margin: 10px 0;
+  }

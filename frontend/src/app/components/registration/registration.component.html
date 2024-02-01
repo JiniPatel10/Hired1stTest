@@ -1,0 +1,83 @@
+<p-toast position="top-right" life="5000"></p-toast>
+
+<div class="card ui-grid AddUpdateForm">
+    <form novalidate="novalidate" [formGroup]="userForm">
+        <div class="p-formgrid p-field p-grid">
+            <div class="form-group p-field p-grid p-md-6">
+                <div class="p-md-4">
+                    <label for="first-name">First Name<span style="color: red;display: inline;"> *</span></label>
+                </div>
+                <div>
+                    <input id="firstName" pInputText name="firstName"  [(ngModel)]="user.firstName"
+                    formControlName="firstName" />
+                    <span
+                    *ngIf="((userForm.get('firstName').touched || userForm.get('firstName').dirty) && userForm.get('firstName').errors)">
+                    <span style="color: red;display: block;" *ngIf="userForm.get('firstName').errors">
+                        First name is required
+                    </span>
+                </span>
+                </div>
+
+            </div>
+          
+        
+            <div class="form-group p-field p-grid p-md-6">
+                <div class="p-md-4">
+                    <label for="lastName">Last name</label>
+                </div>
+                <div class="p-md-7">
+                    <input id="lastName" pInputText name="lastName"  [(ngModel)]="user.lastName"
+                    formControlName="lastName" />
+                  
+                </div>
+               
+            </div>
+            <div class="form-group p-field p-grid p-md-6">
+                <div class="p-md-4">
+                    <label for="email">Email</label><span style="color: red;display: inline;"> *</span>
+                </div>
+                <div class="p-md-7">
+                    <input id="email" pInputText name="email"  [(ngModel)]="user.email"  (input)="onInputEmail()"
+                    formControlName="email" />
+                    <span
+                    *ngIf="((userForm.get('email').touched || userForm.get('email').dirty) && userForm.get('email').errors)">
+                    <span style="color: red;display: block;" *ngIf="userForm.get('email').errors">
+                        Invalid email
+                    </span>
+                </span>
+                </div>
+               
+            </div>
+            <div class="form-group p-field p-grid p-md-6">
+                <div class="p-md-4">
+            <label for="password">Password</label><span style="color: red;display: inline;"> *</span>
+            </div>
+            <div class="p-md-7">
+            <p-password id="password" class="placeholder_password"  [(ngModel)]="user.password" [feedback]="false" [toggleMask]="true" name="password" formControlName="password" ></p-password>
+            <span
+            *ngIf="((userForm.get('password')?.touched || userForm.get('password')?.dirty) && userForm.get('password')?.errors)">
+            <span style="color: red;display: block;" *ngIf="userForm.get('password')?.errors">
+                Password can be of minimum 6 and maximum 20 characters
+            </span>
+            </span>
+            </div>
+            </div> 
+         
+        </div>
+        <button style="margin-top: 10px;" pButton pRipple   class="p-button-primary p-mr-2" (click)="submitUser()"
+        [disabled]="!userForm.valid"> Save
+        </button>
+        <p>
+            <span><a  routerLink="/login">Already have an account? Log in </a></span>
+        </p>
+    </form>
+
+
+</div>
+
+<p-blockUI [blocked]="loading">
+    <i class="pi pi-spin pi-spinner"
+      style="position:absolute;top:50%;left:47%;color: black;font-size: 100px;"></i>
+  </p-blockUI>
+    
+  <p-toast position="top-right" life="5000"></p-toast>

@@ -1,0 +1,154 @@
+
+
+<p-toolbar styleClass="p-mb-4">
+  
+    <div style="margin-top: 5px;margin-bottom: 5px;">
+        <button pButton 
+        pRipple 
+        label="Add New User" 
+        icon="pi pi-plus" 
+        class="p-button-success p-mr-2" 
+        (click)="addNewUser()">
+</button>
+
+    </div>
+    </p-toolbar>
+
+<p-table #dt [value]="usersList" dataKey="id" [lazy]="true" (onLazyLoad)="loadUsers($event)"
+[rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,25,50]" [loading]="isLoading"  [sortOrder]="-1" 
+[paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [paginator]="true" 
+[(first)]="pageInput.first" [showCurrentPageReport]="true" 
+[rowsPerPageOptions]="[10,15,25,50,100,500,1000]"
+[totalRecords]="totalRecords">
+<ng-template pTemplate="header">
+    <tr>
+
+        <th >Actions</th>
+
+        <th pSortableColumn="firstName">
+            First Name <p-sortIcon field="firstName" ></p-sortIcon>
+        </th>
+        <th pSortableColumn="lastName">
+            Last Name <p-sortIcon field="lastName" ></p-sortIcon>
+        </th>
+        <th pSortableColumn="email">
+            Email <p-sortIcon field="email" ></p-sortIcon>
+        </th>
+    </tr>
+</ng-template>
+<ng-template pTemplate="body" let-user>
+    <tr>
+        <td>
+            <button 
+            _ngcontent-aci-c170="" pbutton="" pripple="" icon="pi pi-pencil" (click)="onEdit(user)"
+                class="p-button-rounded p-button-success p-mr-2 p-ripple p-button p-component p-button-icon-only">
+                 <i class="pi pi-pencil"></i>
+            </button>
+
+            <button  _ngcontent-dwl-c170="" pbutton="" pripple="" icon="pi pi-trash" (click)="onDelete(user)"
+            class="p-button-rounded p-button-warning p-ripple p-button p-component p-button-icon-only ml-2">
+            <i class="pi pi-trash"></i>
+        </button>
+        </td>
+        <td>{{user.firstName}}</td>
+        <td>{{user.lastName}}</td>
+        <td>{{user.email}}</td>
+    </tr>
+</ng-template>
+<ng-template pTemplate="emptymessage">
+    <tr>
+        <td colspan="4">No Users found.</td>
+    </tr>
+</ng-template>
+</p-table>
+
+<p-dialog [(visible)]="newDialog" 
+          [style]="{width: '1000px'}" 
+          header="User Details" 
+          [modal]="true"
+          [draggable]="false" 
+          styleClass="p-fluid"
+          [closable]="false">
+    <ng-template pTemplate="content">
+        <form novalidate="novalidate" [formGroup]="userForm">
+            <div class="p-formgrid p-field p-grid">
+                <div class="form-group p-field p-grid p-md-6">
+                    <div class="p-md-4">
+                        <label for="first-name">First Name<span style="color: red;display: inline;"> *</span></label>
+                    </div>
+                    <div>
+                        <input id="firstName" pInputText name="firstName"  [(ngModel)]="user.firstName"
+                        formControlName="firstName" />
+                        <span
+                        *ngIf="((userForm.get('firstName').touched || userForm.get('firstName').dirty) && userForm.get('firstName').errors)">
+                        <span style="color: red;display: block;" *ngIf="userForm.get('firstName').errors">
+                            First name is required
+                        </span>
+                    </span>
+                    </div>
+    
+                </div>
+              
+            
+                <div class="form-group p-field p-grid p-md-6">
+                    <div class="p-md-4">
+                        <label for="lastName">Last name</label>
+                    </div>
+                    <div class="p-md-7">
+                        <input id="lastName" pInputText name="lastName"  [(ngModel)]="user.lastName"
+                        formControlName="lastName" />
+                      
+                    </div>
+                   
+                </div>
+                <div class="form-group p-field p-grid p-md-6">
+                    <div class="p-md-4">
+                        <label for="email">Email</label><span style="color: red;display: inline;"> *</span>
+                    </div>
+                    <div class="p-md-7">
+                        <input id="email" pInputText name="email"  [(ngModel)]="user.email"  (input)="onInputEmail()"
+                        formControlName="email" />
+                        <span
+                        *ngIf="((userForm.get('email').touched || userForm.get('email').dirty) && userForm.get('email').errors)">
+                        <span style="color: red;display: block;" *ngIf="userForm.get('email').errors">
+                            Invalid email
+                        </span>
+                    </span>
+                    </div>
+                   
+                </div>
+              
+            </div>
+    
+          
+        </form>
+    </ng-template>
+    
+    <ng-template pTemplate="footer">
+        <button pButton 
+                pRipple 
+                label="Cancel" 
+                icon="pi pi-times" 
+                class="p-button-primary p-mr-2" 
+                (click)="hideDialog()">
+        </button>
+        <button pButton 
+                pRipple 
+                [disabled]="
+                userForm.invalid"
+                label="Save" 
+                icon="pi pi-check" 
+                class="p-button-primary p-mr-2" 
+                (click)="submitUser()">
+        </button>
+    </ng-template>
+</p-dialog>
+
+<p-blockUI [blocked]="loading">
+    <i class="pi pi-spin pi-spinner"
+      style="position:absolute;top:50%;left:47%;color: black;font-size: 100px;"></i>
+  </p-blockUI>
+    
+  <p-toast position="top-right" life="5000"></p-toast>
+
+  <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>

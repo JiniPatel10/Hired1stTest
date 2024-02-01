@@ -1,0 +1,24 @@
+.account-info{
+    margin: 35px;
+}
+
+.account-info-title{
+    font-size: 30px;
+    font-weight: 400; 
+}
+
+.account-box{
+    border: solid black 1px;
+    margin-top: 45px;
+}
+
+.account-box-header{
+    font-size: 20px;
+}
+
+.right-align-button{
+    float: right;
+}
+.input-with-icon {
+    display: flex;
+  }

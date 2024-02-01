@@ -1,0 +1,21 @@
+<div class="sticky-side-menu" *ngIf="userIsAuthenticated">
+    <div class="sidebar-content">
+      <ul class="menu-list">
+        <li>
+          <a routerLink="/users" routerLinkActive="menu-list-item-selected">
+            <i class="pi pi-fw pi-users menu-color"></i> Users
+          </a>
+        </li>
+        <li>
+          <a routerLink="/products" routerLinkActive="menu-list-item-selected">
+            <i class="pi pi-fw pi-server menu-color"></i> Products
+          </a>
+        </li>
+        <li>
+            <a routerLink="/profile" routerLinkActive="menu-list-item-selected">
+              <i class="pi pi-fw pi-user menu-color"></i> Edit Profile
+            </a>
+          </li>
+      </ul>
+    </div>
+  </div>

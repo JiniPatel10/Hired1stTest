@@ -1,0 +1,168 @@
+<p-blockUI [blocked]="isLoading">
+    <i class="pi pi-spin pi-spinner"
+      style="position:absolute;top:50%;left:47%;color: black;font-size: 100px;"></i>
+  </p-blockUI>
+    
+  <p-toast position="top-right" life="5000"></p-toast>
+
+  <div class="account-info">
+    <p class="account-info-title">Login Information</p>
+<div class="row">
+    <div class="account-box col-md-3" style="margin-right: 70px;">
+        <div style="margin: 25px;">
+            <span class="account-box-header" >EMAIL</span>
+            <a (click)="editEmailDialog = true;" style="color: blue;cursor: pointer;float: right;">Edit</a>
+        </div>
+        <div style="margin: 25px;">
+            <span >{{user?.email}}</span>
+        </div>
+    </div>
+
+
+    <div class="account-box col-md-3" style="margin-right: 70px;">
+        <div style="margin: 25px;">
+            <span class="account-box-header" >NAME</span>
+            <a (click)="onEditFirstName()" style="color: blue;cursor: pointer;float: right;">Edit</a>
+        </div>
+        <div style="margin: 25px;">
+            <span >{{user?.firstName}}</span>
+        </div>
+    </div>
+
+    <div class="account-box col-md-3" style="margin-right: 70px;">
+        <div style="margin: 25px;">
+            <span class="account-box-header" >SURNAME</span>
+            <a (click)="onEditSurname()" style="color: blue;cursor: pointer;float: right;">Edit</a>
+        </div>
+        <div style="margin: 25px;">
+            <span >{{user?.lastName}}</span>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="account-box col-md-3" style="margin-right: 70px;">
+        <div style="margin: 25px;">
+            <span class="account-box-header" >PASSWORD</span>
+            <a (click)="changePasswordDialog = true;" style="color: blue;cursor: pointer;float: right;">Edit</a>
+        </div>
+        <div style="margin: 25px;">
+            <span > {{hidePassword ?  '**********' : user?.password}}</span>
+            <a style="margin-left: 10px;vertical-align: middle;cursor: pointer;" (click)="togglePasswordVisibility()"  pButton pRipple type="button"  class="p-button-rounded p-button-info p-button-text ">{{hidePassword ? 'View ' : 'Hide '}}</a>  
+        </div>
+    </div>
+
+
+</div>
+</div>
+
+<p-dialog header="Edit" [(visible)]="editEmailDialog" [style]="{width: '50vw'}" [closable]="false" [modal]="true">
+    <ng-template pTemplate="header">
+         EMAIL
+    </ng-template>
+    <form novalidate [formGroup]="emailForm">
+        <span style="font-size: 18px;"> Current Email : {{user?.email}} </span>
+        <div class="form-group" style="margin-top: 10px;">
+          <input type="text" formControlName="email" [(ngModel)]="editedEmail" class="form-control" pInputText placeholder="New Email" required />
+          <span class="help-block" *ngIf="(emailForm.get('email').touched ||
+          emailForm.get('email').dirty) &&
+          emailForm.get('email').errors">
+          <span *ngIf="emailForm.get('email').errors">
+            Please check your entry and try again.           
+        </span>         
+        </span>
+        <span class="help-block" *ngIf="user?.email == editedEmail">
+            New email should be different than the existing email. Please check your entry and try again.         
+        </span>  
+        </div>
+      </form>
+      <ng-template pTemplate="footer">
+        <div class="text-center">
+            <button type="button" pButton  label="Save" (click)="updateEmail()"></button>
+            <button type="button" pButton label="Cancel" (click)="closeDialog()"></button>
+          </div>    
+        </ng-template>
+</p-dialog>
+
+<p-dialog header="Edit" [(visible)]="editNameDialog" [style]="{width: '50vw'}" [closable]="false" [modal]="true">
+    <ng-template pTemplate="header">
+        NAME
+    </ng-template>
+    <form novalidate [formGroup]="nameForm">
+        <div class="form-group">
+          <input type="text" formControlName="name" [(ngModel)]="editedName" class="form-control" pInputText  required />
+          <span class="help-block" *ngIf="(nameForm.get('name').touched ||
+          nameForm.get('name').dirty) &&
+          nameForm.get('name').errors">
+          <span *ngIf="nameForm.get('name').errors">
+            First Name is required        
+        </span>         
+        </span>
+        </div>
+      </form>
+      <ng-template pTemplate="footer">
+        <div class="text-center">
+            <button type="button" pButton  label="Update" (click)="updateName()"></button>
+            <button type="button" pButton label="Cancel" (click)="closeDialog()"></button>
+          </div>    
+        </ng-template>
+</p-dialog>
+
+<p-dialog header="Edit" [(visible)]="editSurnameDialog" [style]="{width: '50vw'}" [closable]="false" [modal]="true">
+    <ng-template pTemplate="header">
+        SURNAME
+    </ng-template>
+    <form novalidate [formGroup]="surnameForm">
+        <div class="form-group">
+          <input type="text" formControlName="surname" [(ngModel)]="editedSurname" class="form-control" pInputText  required />
+
+        </div>
+      </form>
+      <ng-template pTemplate="footer">
+        <div class="text-center">
+            <button type="button" pButton  label="Update" (click)="updateSurname()"></button>
+            <button type="button" pButton label="Cancel" (click)="closeDialog()"></button>
+          </div>    
+        </ng-template>
+</p-dialog>
+
+<p-dialog header="Edit" [(visible)]="changePasswordDialog" [style]="{width: '50vw'}" [closable]="false" [modal]="true">
+    <ng-template pTemplate="header">
+        PASSWORD
+    </ng-template>
+    <form novalidate [formGroup]="changePasswordForm">
+        <p-message *ngIf="error" severity="error" [text]="message" [escape]="true"></p-message>
+
+        <div class="form-group form-input-margins" style="width: 100%; min-width: 400px;">
+            <label>Enter new password</label>
+          <p-password id="password" class="placeholder_password"  [(ngModel)]="editedPassword" [feedback]="false" [toggleMask]="true" name="password" formControlName="password" ></p-password>
+
+          <span class="help-block" *ngIf="(changePasswordForm.get('password').touched ||
+             changePasswordForm.get('password').dirty) &&
+             changePasswordForm.get('password').errors">
+            <span *ngIf="changePasswordForm.get('password').errors">
+              The password you entered is not secure. 
+            </span>
+          </span>
+        </div>
+
+        <div class="form-group form-input-margins" style="width: 100%; min-width: 400px;">
+            <label>Retype new password</label>
+          <p-password id="confirmPassword" class="placeholder_password"  [(ngModel)]="editedConfirmPassword" [feedback]="false" [toggleMask]="true" name="confirmPassword" formControlName="confirmPassword" ></p-password>
+
+          <span class="help-block" *ngIf="(changePasswordForm.get('confirmPassword').touched ||
+          changePasswordForm.get('confirmPassword').dirty) &&
+          changePasswordForm.get('confirmPassword').errors">
+            <span *ngIf="changePasswordForm.get('confirmPassword').errors">
+              The password you entered is not secure.
+            </span>
+          </span>
+        </div>
+      </form>
+      <ng-template pTemplate="footer">
+        <div class="text-center">
+            <button type="button" pButton  label="Update" (click)="changePassword()"></button>
+            <button type="button" pButton label="Cancel" (click)="closeDialog()"></button>
+          </div>    
+        </ng-template>
+</p-dialog>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
