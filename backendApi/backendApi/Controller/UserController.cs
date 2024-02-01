@@ -1,4 +1,5 @@
-﻿using Amazon.Runtime;
+﻿#region Usings
+using Amazon.Runtime;
 using backendApi.Infrastructure;
 using core.Domain.ClassTypes;
 using core.Domain.Models;
@@ -11,6 +12,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+#endregion
 
 namespace backendApi.Controller
 {
@@ -18,9 +20,12 @@ namespace backendApi.Controller
 
     public class UserController : ControllerBase
     {
+        #region Private variables
         private readonly IUserRepository _userRepository;
         private readonly IMailService _mailService;
+        #endregion
 
+        #region Constructor
         public UserController(IMailService mailService,
                    IUserRepository userRepository)
         {
@@ -28,6 +33,9 @@ namespace backendApi.Controller
             _mailService = mailService;
 
         }
+        #endregion
+        #region Public methods
+
         [HttpPost("createUser")]
         public async Task<IActionResult> CreateUser([FromBody] User user)
         {
@@ -49,7 +57,7 @@ namespace backendApi.Controller
             }
             catch (Exception ex)
             {
-                string errorMessage = "Error occur while creating user in database";
+                string errorMessage = "Error occur while creating user in database" + ex.Message;
                 return BadRequest(errorMessage);
             }
             return Ok(user);
@@ -272,7 +280,7 @@ namespace backendApi.Controller
             }
 
         }
-
+        #endregion
 
         #region Private Methods
         private string getPasswordFromBase64(string password)

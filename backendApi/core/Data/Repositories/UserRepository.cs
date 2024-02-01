@@ -1,3 +1,4 @@
+#region Usings
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Net;
@@ -7,18 +8,23 @@ using core.Domain.Repositories;
 using core.Domain.Models;
 using MongoDB.Driver;
 using core.Domain.ClassTypes;
-
+#endregion
 namespace core.Data.Repositories
 {
     public class UserRepository : IUserRepository
     {
+        #region Private variables
+
         private readonly IMongoDBContext _mongoContext = null;
+        #endregion
+        #region Constructor
 
         public UserRepository(IMongoDBContext context)
         {
             _mongoContext = context;
         }
-
+        #endregion
+        #region Public methods
 
         /// <summary>
         /// save user in database
@@ -139,7 +145,7 @@ namespace core.Data.Repositories
         }
 
         /// <summary>
-        /// get user list
+        /// get all user list
         /// </summary>
         /// <param name="pageInput"></param>
         /// <returns></returns>
@@ -192,5 +198,6 @@ namespace core.Data.Repositories
             else return false;
 
         }
+        #endregion
     }
 }

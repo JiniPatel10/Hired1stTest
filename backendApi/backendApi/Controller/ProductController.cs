@@ -1,4 +1,5 @@
-﻿using backendApi.Infrastructure;
+﻿#region Usings
+using backendApi.Infrastructure;
 using core.Domain.ClassTypes;
 using core.Domain.InterfaceRepositories;
 using core.Domain.Models;
@@ -10,6 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+#endregion
 
 namespace backendApi.Controller
 {
@@ -17,13 +19,20 @@ namespace backendApi.Controller
 
     public class ProductController : ControllerBase
     {
+        #region Private variables
+
         private readonly IProductRepository _productRepository;
+        #endregion
+        #region Constructor
 
         public ProductController(
                    IProductRepository productRepository)
         {
             _productRepository = productRepository;
         }
+        #endregion
+        #region Public methods
+
         [HttpPost("createProduct")]
         public async Task<IActionResult> CreateProduct([FromBody] Product product)
         {
@@ -87,5 +96,6 @@ namespace backendApi.Controller
                 return NotFound(errorMessage);
             }
         }
+        #endregion
     }
 }

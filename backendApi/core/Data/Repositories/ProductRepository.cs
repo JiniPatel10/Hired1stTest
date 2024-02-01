@@ -1,24 +1,29 @@
 ﻿using core.Domain.ClassTypes;
 using core.Domain.InterfaceRepositories;
 using core.Domain.Models;
+#region Usings
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+#endregion
 namespace core.Data.Repositories
 {
     public class ProductRepository : IProductRepository
     {
+        #region Private variables
         private readonly IMongoDBContext _mongoContext = null;
+        #endregion
+        #region Constructor
 
         public ProductRepository(IMongoDBContext context)
         {
             _mongoContext = context;
         }
-
+        #endregion
+        #region Public methods
 
         /// <summary>
         /// save product in database
@@ -47,7 +52,7 @@ namespace core.Data.Repositories
 
 
         /// <summary>
-        /// get user list
+        /// get product list by userid
         /// </summary>
         /// <param name="pageInput"></param>
         /// <param name="userId"></param>
@@ -101,6 +106,7 @@ namespace core.Data.Repositories
             else return false;
 
         }
+        #endregion
     }
 
 }
