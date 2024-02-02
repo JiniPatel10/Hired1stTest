@@ -152,8 +152,27 @@ namespace backendApi.Controller
         {
             try
             {
+                User user = await _userRepository.GetById(model.Id);
+                if (model.Email.ToLower().Trim() != user.Email.ToLower().Trim())
+                {
+                     user = await _userRepository.GetUserByEmail(model.Email);
+                    if(user == null)
+                    {
+                        await _userRepository.UpdateUser(model);
+                        return new JsonResult(model);
+                    }
+                    else
+                    {
+                        return UnprocessableEntity("Email already exists. Please check your entry and try again.");
+
+                    }
+                }
+                else
+                {
                     await _userRepository.UpdateUser(model);
                     return new JsonResult(model);
+                }
+         
 
             }
             catch (Exception ex)
@@ -202,7 +221,9 @@ namespace backendApi.Controller
                     string password = GenerateRandomPassword(6);
                     user.Password = setPasswordToBase64(password);
                     user.Created = DateTime.Now;
-                    user = await _userRepository.Save(user);
+                    User newUser = await _userRepository.Save(user);
+                    return Ok(newUser);
+
                 }
                 else
                 {
@@ -215,7 +236,6 @@ namespace backendApi.Controller
                 string errorMessage = "Error occur while creating user in database" + ex.Message;
                 return BadRequest(new GeneralErrorResultModel(ErrorCodes.CreatingUserError, errorMessage));
             }
-            return Ok(user);
         }
 
         [HttpPost("changePassword/{userIdentifier}")]

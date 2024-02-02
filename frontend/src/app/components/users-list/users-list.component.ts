@@ -22,7 +22,6 @@ export class UsersListComponent {
   rows: number = 10;
   newDialog: boolean = false;
   isNew: boolean = false;
-  isLoading: boolean = false;
   userForm: FormGroup;
   userId: string;
   constructor(private fb: FormBuilder,
@@ -88,13 +87,15 @@ export class UsersListComponent {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to delete this user?',
       accept: () => {
-        this.isLoading = true; 
+        this.loading = true; 
         this.userService.deleteUser(user.id).subscribe({ next:(response) =>  {
           this.loading = false;
+          this.usersList = this.usersList.filter(x => x.id != user.id);
           this._notificationService.showMessage('success', true, `User deleted successfully`, '');
         },
         error:(error: any) => {
           this.loading = false;
+          this.loadLazyData();
           if (error.status == 422) {
             this._notificationService.showMessage('error', true, `${error.error}`, '');
           } else {
@@ -133,25 +134,52 @@ export class UsersListComponent {
     this.createForm();
   }
   createUser(){
+    if (this.isNew) {
+      this.addUser();
+    }else{
+      this.updateUser();
+    }
+
+  }
+  addUser(){
     this.userService.addNewUser(this.user).subscribe({ next:(response) =>  {
       this.loading = false;
       this.newDialog = false;
       this.createForm();
-      if (this.isNew) {
-        this.usersList.push(this.user);
+        this.usersList.push(response);
         this.totalRecords++;
         this._notificationService.showMessage('success', true, `New user added successfully`, '');
-      }else{
+
+    },
+    error:(error: any) => {
+      this.loading = false;
+      this.newDialog = false;
+      this.loadLazyData();
+      if (error.status == 422) {
+        this._notificationService.showMessage('error', true, `${error.error}`, '');
+      } else {
+        this._notificationService.showMessage('error', true, `${error.status}
+    - ${error.statusText} - ${error.error}`, '');
+      }
+    }});  
+  }
+
+  updateUser(){
+    this.userService.updateUser(this.user).subscribe({ next:(response) =>  {
+      this.loading = false;
+      this.newDialog = false;
+
         let index = this.usersList.findIndex(x => x.id == this.userId);
         if(index != -1){
           this.usersList[index] = this.user;
         }
         this._notificationService.showMessage('success', true, `User updated successfully`, '');
-      }
+      
     },
     error:(error: any) => {
       this.loading = false;
       this.newDialog = false;
+      this.loadLazyData();
       if (error.status == 422) {
         this._notificationService.showMessage('error', true, `${error.error}`, '');
       } else {

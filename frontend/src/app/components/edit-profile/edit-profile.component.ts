@@ -39,7 +39,7 @@ export class EditProfileComponent {
   hideConfirmPassword: boolean = true;
   message: string = null;
   error: boolean = false;
-  constructor( private notificationService: NotificationService,private router: Router,
+  constructor( private notificationService: NotificationService,private authService: AuthService,
     private userService:UserService, private fb: FormBuilder,private confirmationService: ConfirmationService,) { 
       this.userIdentifier = localStorage.getItem('userIdentifier');
 
@@ -151,7 +151,7 @@ export class EditProfileComponent {
         }
         this.user.email = this.editedEmail;
         this.confirmationService.confirm({
-          message: 'By updating email your login email will be changed. Are you sure that you want to update email?',
+          message: 'By updating email your login email will be changed and you will be logged out of the system. You will have to log in again with new email. Are you sure that you want to update email?',
           accept: () => {
             this.isLoading = true; 
             this.userService.updateUserEmail(this.user).subscribe({
@@ -161,6 +161,7 @@ export class EditProfileComponent {
                 this.setEditValues();         
                 this.notificationService.showSuccess(`Email updated successfully`);
                 this.user = response;
+                this.authService.logout();
               }, error:(error) =>{
                 this.isLoading = false; 
                 if (error.status == 422) {

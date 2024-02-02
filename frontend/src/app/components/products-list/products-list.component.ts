@@ -22,7 +22,6 @@ export class ProductsListComponent {
   rows: number = 10;
   newDialog: boolean = false;
   isNew: boolean = false;
-  isLoading: boolean = false;
   productForm: FormGroup;
   userId: string;
   constructor(private fb: FormBuilder,
@@ -88,13 +87,15 @@ export class ProductsListComponent {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to delete this product?',
       accept: () => {
-        this.isLoading = true; 
+        this.loading = true; 
         this.productService.deleteProduct(product.id).subscribe({ next:(response) =>  {
           this.loading = false;
+          this.productList = this.productList.filter(x => x.id != product.id);
           this._notificationService.showMessage('success', true, `Product deleted successfully`, '');
         },
         error:(error: any) => {
           this.loading = false;
+          this.loadLazyData();
           if (error.status == 422) {
             this._notificationService.showMessage('error', true, `${error.error}`, '');
           } else {
@@ -135,7 +136,7 @@ export class ProductsListComponent {
       this.newDialog = false;
       this.createForm();
       if (this.isNew) {
-        this.productList.push(this.product);
+        this.productList.push(response);
         this.totalRecords++;
         this._notificationService.showMessage('success', true, `New product added successfully`, '');
       }else{
@@ -149,6 +150,7 @@ export class ProductsListComponent {
     error:(error: any) => {
       this.loading = false;
       this.newDialog = false;
+      this.loadLazyData();
       if (error.status == 422) {
         this._notificationService.showMessage('error', true, `${error.error}`, '');
       } else {
