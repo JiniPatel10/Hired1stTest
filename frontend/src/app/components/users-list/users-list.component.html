@@ -15,7 +15,7 @@
     </p-toolbar>
 
 <p-table #dt [value]="usersList" dataKey="id" [lazy]="true" (onLazyLoad)="loadUsers($event)"
-[rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,25,50]" [loading]="isLoading"  [sortOrder]="-1" 
+[rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="isLoading"  [sortOrder]="-1" 
 [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [paginator]="true" 
 [(first)]="pageInput.first" [showCurrentPageReport]="true" 
 [rowsPerPageOptions]="[10,15,25,50,100,500,1000]"
@@ -107,13 +107,14 @@
                     </div>
                     <div class="p-md-7">
                         <input id="email" pInputText name="email"  [(ngModel)]="user.email"  (input)="onInputEmail()"
-                        formControlName="email" />
+                        formControlName="email"  [ngClass]="{'pointer-none': user.id != null}"/>
                         <span
                         *ngIf="((userForm.get('email').touched || userForm.get('email').dirty) && userForm.get('email').errors)">
                         <span style="color: red;display: block;" *ngIf="userForm.get('email').errors">
-                            Invalid email
+                             Enter an email address with '@' and '.'.
                         </span>
                     </span>
+                    <span *ngIf="user.id != null">Email cannot be edited</span>
                     </div>
                    
                 </div>

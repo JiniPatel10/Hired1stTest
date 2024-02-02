@@ -83,3 +83,11 @@
     margin-bottom: 10px;
     color: #ca1616;
   }
+  .pointer-none {
+    pointer-events: none; 
+}
+.pointer-none:focus {
+    outline-style: none;
+	box-shadow: none;
+	border-color: #D4D6D9;
+}

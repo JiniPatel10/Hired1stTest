@@ -1,5 +1,6 @@
 ﻿#region Usings
 using backendApi.Infrastructure;
+using backendApi.Middleware;
 using core.Domain.ClassTypes;
 using core.Domain.InterfaceRepositories;
 using core.Domain.Models;
@@ -45,7 +46,7 @@ namespace backendApi.Controller
             catch (Exception ex)
             {
                 string errorMessage = "Error occur while creating product in database";
-                return BadRequest(errorMessage);
+                return BadRequest(new GeneralErrorResultModel(ErrorCodes.CreatingProductError, errorMessage));
             }
             return Ok(product);
         }
@@ -65,7 +66,7 @@ namespace backendApi.Controller
             catch (Exception ex)
             {
                 string ErrorMsg = "Error getting product by id" + ex.Message;
-                return BadRequest(ErrorMsg);
+                return BadRequest(new GeneralErrorResultModel(ErrorCodes.GettingProductByIdError, ErrorMsg));
             }
         }
         [HttpDelete("{id}")]
@@ -79,7 +80,7 @@ namespace backendApi.Controller
             catch (Exception ex)
             {
                 string ErrorMsg = "Error deleting product by id" + ex.Message;
-                return BadRequest(ErrorMsg);
+                return BadRequest(new GeneralErrorResultModel(ErrorCodes.DeletingProductError, ErrorMsg));
             }
         }
         [HttpPost("getProductListByUserId/{id}")]
@@ -93,7 +94,7 @@ namespace backendApi.Controller
             catch (Exception ex)
             {
                 string errorMessage = "Error occur while getting the product list by id" + ex.Message;
-                return NotFound(errorMessage);
+                return BadRequest(new GeneralErrorResultModel(ErrorCodes.GettlingAllProductError, errorMessage));
             }
         }
         #endregion

@@ -38,7 +38,8 @@ namespace backendApi
             {
                 //TODO : Use a App setting instead of hardcoded URL
                 options.AddPolicy("ApiCorsPolicy",
-                    s => s.AllowAnyOrigin()      
+                    s => s.WithOrigins(
+                                          "http://localhost:5000")
                     .AllowAnyMethod()
                           .AllowAnyHeader()
                          );

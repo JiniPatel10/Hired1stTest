@@ -13,7 +13,7 @@
     </p-toolbar>
 
     <p-table #dt [value]="productList" dataKey="id" [lazy]="true" (onLazyLoad)="loadProducts($event)"
-[rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,25,50]" [loading]="isLoading"  [sortOrder]="-1" 
+[rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="isLoading"  [sortOrder]="-1" 
 [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [paginator]="true" 
 [(first)]="pageInput.first" [showCurrentPageReport]="true" 
 [rowsPerPageOptions]="[10,15,25,50,100,500,1000]"

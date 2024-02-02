@@ -1,6 +1,7 @@
 ﻿#region Usings
 using Amazon.Runtime;
 using backendApi.Infrastructure;
+using backendApi.Middleware;
 using core.Domain.ClassTypes;
 using core.Domain.Models;
 using core.Domain.Repositories;
@@ -58,7 +59,7 @@ namespace backendApi.Controller
             catch (Exception ex)
             {
                 string errorMessage = "Error occur while creating user in database" + ex.Message;
-                return BadRequest(errorMessage);
+                return BadRequest(new GeneralErrorResultModel(ErrorCodes.CreatingUserError, errorMessage));
             }
             return Ok(user);
         }
@@ -98,8 +99,8 @@ namespace backendApi.Controller
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return BadRequest(ex.Message);
+                return BadRequest(new GeneralErrorResultModel(ErrorCodes.ValidatingUserError, ex.Message));
+
             }
 
         }
@@ -120,7 +121,7 @@ namespace backendApi.Controller
             catch (Exception ex)
             {
                 string ErrorMsg = "Error getting user by id" + ex.Message;
-                return BadRequest(ErrorMsg);
+                return BadRequest(new GeneralErrorResultModel(ErrorCodes.GettingUserByIdError, ErrorMsg));
             }
         }
         [HttpPost("updateUserEmail")]
@@ -142,8 +143,7 @@ namespace backendApi.Controller
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return BadRequest(ex.Message);
+                return BadRequest(new GeneralErrorResultModel(ErrorCodes.UpdatingUserError, ex.Message));
             }
 
         }
@@ -158,8 +158,7 @@ namespace backendApi.Controller
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return BadRequest(ex.Message);
+                return BadRequest(new GeneralErrorResultModel(ErrorCodes.UpdatingUserError, ex.Message));
             }
 
         }
@@ -175,7 +174,7 @@ namespace backendApi.Controller
             catch (Exception ex)
             {
                 string ErrorMsg = "Error deleting user by id" + ex.Message;
-                return BadRequest(ErrorMsg);
+                return BadRequest(new GeneralErrorResultModel(ErrorCodes.DeletingUserError, ErrorMsg));
             }
         }
         [HttpPost("getUsersList")]
@@ -189,7 +188,7 @@ namespace backendApi.Controller
             catch (Exception ex)
             {
                 string errorMessage = "Error occur while getting the user list  data by id" + ex.Message;
-                return NotFound(errorMessage);
+                return BadRequest(new GeneralErrorResultModel(ErrorCodes.GettingUserByIdError, errorMessage));
             }
         }
         [HttpPost("addNewUser")]
@@ -213,8 +212,8 @@ namespace backendApi.Controller
             }
             catch (Exception ex)
             {
-                string errorMessage = "Error occur while creating user in database";
-                return BadRequest(errorMessage);
+                string errorMessage = "Error occur while creating user in database" + ex.Message;
+                return BadRequest(new GeneralErrorResultModel(ErrorCodes.CreatingUserError, errorMessage));
             }
             return Ok(user);
         }
@@ -232,8 +231,7 @@ namespace backendApi.Controller
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return BadRequest(ex.Message);
+                return BadRequest(new GeneralErrorResultModel(ErrorCodes.UpdatingUserError, ex.Message));
             }
 
         }
@@ -275,8 +273,7 @@ namespace backendApi.Controller
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return BadRequest(ex.Message);
+                return BadRequest(new GeneralErrorResultModel(ErrorCodes.SendMailError, ex.Message));
             }
 
         }

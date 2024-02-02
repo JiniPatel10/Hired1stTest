@@ -43,6 +43,7 @@ export class UsersListComponent {
     this.createForm();
     this.isNew = true
     this.newDialog = true;
+    this.user = new User();
   }
 
   loadUsers(event: LazyLoadEvent) {
